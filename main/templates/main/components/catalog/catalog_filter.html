@@ -1,0 +1,30 @@
+<!-- Filters -->
+            <div class="catalog-filters">
+                <div class="filter-group">
+                    <label class="filter-label">КАТЕГОРИЯ:</label>
+                     {% for category in categories %}
+                    <select class="filter-select">
+                        <option value="all">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">ЦВЕТ:</label>
+                    <select id="colorFilter" class="filter-select">
+                        <option value="all">ВСЕ</option>
+                        <option value="black">ЧЕРНЫЙ</option>
+                        <option value="white">БЕЛЫЙ</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">СОРТИРОВКА:</label>
+                    <select id="sortFilter" class="filter-select">
+                        <option value="default">ПО УМОЛЧАНИЮ</option>
+                        <option value="price-asc">ЦЕНА: ПО ВОЗРАСТАНИЮ</option>
+                        <option value="price-desc">ЦЕНА: ПО УБЫВАНИЮ</option>
+                        <option value="name">ПО НАЗВАНИЮ</option>
+                    </select>
+                </div>
+            </div>

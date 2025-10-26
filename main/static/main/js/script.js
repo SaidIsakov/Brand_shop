@@ -161,6 +161,7 @@ function addToCart(id, name, price) {
     showAddToCartMessage(name);
 }
 
+
 function showAddToCartMessage(productName) {
     // Создаем временное сообщение о добавлении
     const message = document.createElement('div');
@@ -334,3 +335,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+

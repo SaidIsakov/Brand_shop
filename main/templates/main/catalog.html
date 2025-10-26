@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+      <!-- Catalog Hero -->
+      {% include "main/components/catalog/catalog_hero.html" %}
+
+    <!-- Catalog Section -->
+    <section class="catalog-section">
+        <div class="container">
+            <!-- Filters -->
+            {% include "main/components/catalog/catalog_filter.html" %}
+
+            <!-- Products Count -->
+            <div class="products-count">
+                <span>{{ products|length }}</span> ТОВАРОВ
+            </div>
+
+            <!-- Products Grid -->
+               <!-- Collection Section -->
+    <section class="collection" id="collection">
+        <div class="container">
+            <h2 class="section-title">Каталог</h2>
+            <div class="products-grid">
+              {% for product in products %}
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="{{ product.main_image.url }}" alt="Белые кроссовки">
+                        <div class="product-overlay">
+                            <a href="{{ product.get_absolute_url }}"
+                            hx-get="{{ product.get_absolute_url }}"
+                            hx-target="#main-content"
+                            hx-push-url="true"
+                            class="view-btn">Подробнее</a>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>{{ product.name }}</h3>
+                        <p class="price"> {{ product.price }} ₽</p>
+                     </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+  </div>
+
+{% endblock main %}
+
+

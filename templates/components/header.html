@@ -3,7 +3,24 @@
         <nav class="nav">
             <div class="logo">BRAND</div>
             <ul class="nav-menu">
-                <li><a href="#home">Главная</a></li>
+                <li>
+                  <a href="{% url "index" %}"
+                  hx-get="{% url "index" %}"
+                  hx-target="#main-content"
+                  hx-push-url="true">
+                  Главная
+                  </a>
+                </li>
+
+                <li>
+                  <a href="{% url 'catalog' %}"
+                     hx-get="{% url 'catalog' %}"
+                     hx-target="#main-content"
+                     hx-push-url="true"
+                     >Каталог
+                  </a>
+                </li>
+
                 <li><a href="#collection">Коллекция</a></li>
                 <li><a href="#about">О нас</a></li>
                 <li><a href="#contact">Контакты</a></li>

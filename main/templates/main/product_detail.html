@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block main %}
+      <main class="product-page">
+        <div class="product-container">
+           <!-- Image Gallery Section -->
+
+           <div class="product-gallery">
+                <div class="main-image-container">
+                    <button class="gallery-nav prev" aria-label="Previous image">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+
+                    <img src="/placeholder.svg?height=600&width=500"
+                         alt="Product main view"
+                         class="main-image"
+                         id="mainImage">
+
+                    <button class="gallery-nav next" aria-label="Next image">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+
+                    <div class="image-counter">
+                        <span id="currentImage">1</span> / <span id="totalImages">4</span>
+                    </div>
+                </div>
+
+                <div class="thumbnail-container">
+                    <img src="/placeholder.svg?height=120&width=100"
+                         alt="Thumbnail 1"
+                         class="thumbnail active"
+                         data-index="0">
+                    <img src="/placeholder.svg?height=120&width=100"
+                         alt="Thumbnail 2"
+                         class="thumbnail"
+                         data-index="1">
+                    <img src="/placeholder.svg?height=120&width=100"
+                         alt="Thumbnail 3"
+                         class="thumbnail"
+                         data-index="2">
+                    <img src="/placeholder.svg?height=120&width=100"
+                         alt="Thumbnail 4"
+                         class="thumbnail"
+                         data-index="3">
+                </div>
+            </div>
+
+            <!-- Product Info Section -->
+            <div class="product-info">
+                <div class="product-header">
+                    <span class="product-category">НОВАЯ КОЛЛЕКЦИЯ</span>
+                    <h1 class="product-title">{{ product.name }}</h1>
+                    <p class="product-price">{{ product.price }} ₽</p>
+                </div>
+
+                <div class="product-description">
+                    <p>Элегантная куртка в минималистичном стиле, созданная для современного городского образа жизни. Изготовлена из премиальных материалов с вниманием к каждой детали.</p>
+                </div>
+
+                <div class="product-features">
+                    <h3>Особенности:</h3>
+                    <ul>
+                        <li>Премиальная ткань с водоотталкивающим покрытием</li>
+                        <li>Минималистичный дизайн без лишних деталей</li>
+                        <li>Удобные внутренние карманы</li>
+                        <li>Регулируемые манжеты</li>
+                    </ul>
+                </div>
+
+                <div class="product-options">
+                    <div class="option-group">
+                        <label>Размер:</label>
+                        <div class="size-selector">
+                            <button class="size-btn">XS</button>
+                            <button class="size-btn">S</button>
+                            <button class="size-btn active">M</button>
+                            <button class="size-btn">L</button>
+                            <button class="size-btn">XL</button>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <label>Цвет:</label>
+                        <div class="color-selector">
+                            <button class="color-btn active" style="background: #000;" aria-label="Black"></button>
+                            <button class="color-btn" style="background: #fff; border: 2px solid #000;" aria-label="White"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-actions">
+                    <button class="btn-primary add-to-cart">ДОБАВИТЬ В КОРЗИНУ</button>
+                    <button class="btn-secondary wishlist">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="product-details">
+                    <details>
+                        <summary>Состав и уход</summary>
+                        <p>100% хлопок премиум качества. Машинная стирка при 30°C. Не отбеливать. Гладить при низкой температуре.</p>
+                    </details>
+                    <details>
+                        <summary>Доставка и возврат</summary>
+                        <p>Бесплатная доставка при заказе от 5000₽. Возврат в течение 14 дней.</p>
+                    </details>
+                    <details>
+                        <summary>Таблица размеров</summary>
+                        <p>XS: 44-46, S: 46-48, M: 48-50, L: 50-52, XL: 52-54</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock main %}
+

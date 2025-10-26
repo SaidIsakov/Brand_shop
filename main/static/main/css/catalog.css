@@ -1,0 +1,108 @@
+/* Catalog Hero */
+.catalog-hero {
+  margin-top: 80px;
+  padding: 80px 0;
+  background-color: #000000;
+  color: #ffffff;
+  text-align: center;
+}
+
+.catalog-title {
+  font-size: 64px;
+  font-weight: 900;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+}
+
+.catalog-subtitle {
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+/* Catalog Section */
+.catalog-section {
+  padding: 60px 0 100px;
+  background-color: #ffffff;
+}
+
+.catalog-filters {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  padding: 30px;
+  background-color: #f5f5f5;
+  border: 2px solid #000000;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filter-label {
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.filter-select {
+  padding: 12px 20px;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.filter-select:focus {
+  outline: none;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.products-count {
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #000000;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 40px;
+}
+
+/* Responsive for Catalog */
+@media (max-width: 768px) {
+  .catalog-title {
+    font-size: 42px;
+  }
+
+  .catalog-filters {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .filter-group {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .filter-select {
+    width: 100%;
+  }
+
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+}

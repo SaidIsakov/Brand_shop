@@ -6,24 +6,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-    
+
     <!-- CSS -->
    <link rel="stylesheet" href="{% static "main/css/style.css" %}">
+   <link rel="stylesheet" href="{% static "main/css/catalog.css" %}">
+   <link rel="stylesheet" href="{% static "main/css/product_detail.css" %}">
 
-    <!-- JS -->
-    <script src="{% static "main/js/script.js" %}"></script>
+   <!-- HTMX -->
+   <script src="https://unpkg.com/htmx.org@1.9.6"></script>
 
 </head>
 
-
+<body>
 <!-- Header -->
 {% include "components/header.html" %}
 
+{% include "components/cart_slidebar.html" %}
+
 <main>
+  <div id="main-content">
   {% block main %}
 
   {% endblock main %}
+  </div>
 </main>
 
 <!-- Footer -->
 {% include "components/footer.html" %}
+
+  <!-- JS -->
+  <script src="{% static 'main/js/script.js' %}"></script>
+  <script src="{% static 'main/js/product_detail.js' %}"></script>
+</body>
