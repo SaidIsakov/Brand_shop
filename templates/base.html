@@ -8,20 +8,18 @@
     <title>{{ title }}</title>
 
     <!-- CSS -->
-   <link rel="stylesheet" href="{% static "main/css/style.css" %}">
-   <link rel="stylesheet" href="{% static "main/css/catalog.css" %}">
-   <link rel="stylesheet" href="{% static "main/css/product_detail.css" %}">
+   <link rel="stylesheet" href="{% static "css/style.css" %}">
+   <link rel="stylesheet" href="{% static "css/catalog.css" %}">
+   <link rel="stylesheet" href="{% static "css/product_detail.css" %}">
 
    <!-- HTMX -->
    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-
 </head>
 
 <body>
 <!-- Header -->
 {% include "components/header.html" %}
-
-{% include "components/cart_slidebar.html" %}
+{% include "cart/cart_modal.html" %}
 
 <main>
   <div id="main-content">
@@ -32,9 +30,12 @@
 </main>
 
 <!-- Footer -->
+<footer class="footer">
 {% include "components/footer.html" %}
+</footer>
 
-  <!-- JS -->
-  <script src="{% static 'main/js/script.js' %}"></script>
-  <script src="{% static 'main/js/product_detail.js' %}"></script>
+   <!-- JS -->
+  <script src="{% static 'js/script.js' %}"></script>
+  <script src="{% static 'js/product_detail.js' %}"></script>
 </body>
+</html>

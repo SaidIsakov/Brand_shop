@@ -2,8 +2,8 @@
             <div class="catalog-filters">
                 <div class="filter-group">
                     <label class="filter-label">КАТЕГОРИЯ:</label>
-                     {% for category in categories %}
                     <select class="filter-select">
+                      {% for category in categories %}
                         <option value="all">{{ category }}</option>
                         {% endfor %}
                     </select>
