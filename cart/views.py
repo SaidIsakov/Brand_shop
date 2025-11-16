@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.db import transaction
 from main.models import ProductSize, Product
 from .models import Cart, CartItem
-from .forms import AddToCartForm, UpdateCartaItemForm
+from .forms import AddToCartForm, UpdateCartItemForm
 import json
 
 
@@ -16,7 +16,7 @@ class CartMixin:
 
     if hasattr(request, 'cart'):
       return request.cart
-    if not request.session_key:
+    if not request.session.session_key:
       request.session.create()
     cart, created = Cart.objects.get_or_create(
       session_key=request.session.session_key

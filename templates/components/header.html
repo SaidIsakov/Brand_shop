@@ -33,7 +33,18 @@
                         <circle cx="9" cy="21" r="1"/>
                         <circle cx="15" cy="21" r="1"/>
                     </svg>
-                    <span class="cart-count" id="cartCount">0</span>
+                      {% with total_items=cart|length %}
+                      {% if total_items > 0 %}
+                      <span class="cart-count" id="cartCount">
+                        {{ total_items }}
+                      </span>
+                      {% else %}
+                      <span class="cart-count" id="cartCount">
+                        0
+                      </span>
+                      {% endif %}
+                      {% endwith %}
+                    </span>
                 </button>
                 <button class="menu-toggle" id="menuToggle">
                     <span></span>

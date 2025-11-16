@@ -63,17 +63,21 @@
                     </ul>
                 </div>
 
+                <!-- SIZES -->
                 <div class="product-options">
                     <div class="option-group">
                         <label>Размер:</label>
+                        {% if product.product_size.all %}
                         <div class="size-selector">
-                            <button class="size-btn">XS</button>
-                            <button class="size-btn">S</button>
-                            <button class="size-btn active">M</button>
-                            <button class="size-btn">L</button>
-                            <button class="size-btn">XL</button>
+                          {% for product_size in product.product_size.all %}
+                            <button class="size-btn">{{ product_size.size.name }}</button>
+                          {% endfor %}
                         </div>
-                    </div>
+                      {% else %}
+
+                      <h3> Нет размеров  </h3>
+                      {% endif %}
+                    
 
                     <div class="option-group">
                         <label>Цвет:</label>
@@ -85,7 +89,8 @@
                 </div>
 
                 <div class="product-actions">
-                    <button class="btn-primary add-to-cart">ДОБАВИТЬ В КОРЗИНУ</button>
+                    <button class="btn-primary add-to-cart" id='add-to-cart-btn'
+                    onclick="addToCart()">ДОБАВИТЬ В КОРЗИНУ</button>
                     <button class="btn-secondary wishlist">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>

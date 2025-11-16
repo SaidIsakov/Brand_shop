@@ -1,6 +1,6 @@
 from .models import Cart
 
-def cart_processor(request):
+def cart_processor(request,):
   if not request.cart.session_key:
     request.session.create()
 
@@ -11,3 +11,4 @@ def cart_processor(request):
     'cart_total_items': cart.total_items,
     'cart_subtotal': cart.subtotal
   }
+
