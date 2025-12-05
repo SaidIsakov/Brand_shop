@@ -1,8 +1,6 @@
 // Глобальная функция инициализации
 function initializeApp() {
     console.log('Initializing app...');
-
-    // Инициализируем все модули
     initMobileMenu();
     initSmoothScroll();
     initContactForm();
@@ -11,13 +9,12 @@ function initializeApp() {
     initCart();
 }
 
-// Мобильное меню
+// Мобильное меню (без изменений)
 function initMobileMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.querySelector('.nav-menu');
 
     if (menuToggle && navMenu) {
-        // Удаляем старые обработчики
         const newToggle = menuToggle.cloneNode(true);
         menuToggle.parentNode.replaceChild(newToggle, menuToggle);
 
@@ -36,7 +33,6 @@ function initMobileMenu() {
             }
         });
 
-        // Закрытие меню при клике на ссылку
         document.addEventListener('click', function(e) {
             if (e.target.closest('.nav-menu a')) {
                 navMenu.classList.remove('active');
@@ -49,7 +45,7 @@ function initMobileMenu() {
     }
 }
 
-// Плавная прокрутка
+// Плавная прокрутка (без изменений)
 function initSmoothScroll() {
     document.addEventListener('click', function(e) {
         if (e.target.closest('a[href^="#"]')) {
@@ -67,7 +63,7 @@ function initSmoothScroll() {
     });
 }
 
-// Форма обратной связи
+// Форма обратной связи (без изменений)
 function initContactForm() {
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
@@ -81,7 +77,7 @@ function initContactForm() {
     }
 }
 
-// Анимации при скролле
+// Анимации при скролле (без изменений)
 function initAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -103,7 +99,7 @@ function initAnimations() {
     });
 }
 
-// Эффекты при скролле
+// Эффекты при скролле (без изменений)
 function initScrollEffects() {
     const header = document.querySelector('.header');
     if (header) {
@@ -118,20 +114,7 @@ function initScrollEffects() {
 }
 
 // Вспомогательные функции
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+
 
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
@@ -158,89 +141,41 @@ function updateHeaderCartCount(count) {
     }
 }
 
-// Корзина
-function initCart() {
-    // Переменные для управления размерами
-    let selectedSizeId = null;
+let selectedSize = null
+let selectedSizeId = null
 
-    // Функция обновления выбранного размера
-    function updateSelectedSize() {
-        const selectedSizeElement = document.querySelector('.size-option.selected');
-        if (selectedSizeElement) {
-            selectedSizeId = selectedSizeElement.dataset.sizeId;
+function updateSelectedSize() {
+        const sizeRadios = document.querySelectorAll('.size-btn');
+        const checkedRadio = Array.from(sizeRadios).find(radio => radio.checked && !radio.disabled);
+        if (checkedRadio) {
+            selectedSize = checkedRadio.dataset.size;
+            selectedSizeId = checkedRadio.value;
+            console.log('Updated Selected Size:', selectedSize, 'ID:', selectedSizeId);
         } else {
+            selectedSize = null;
             selectedSizeId = null;
+            console.log('No valid size selected');
         }
     }
 
-    // Глобальная функция добавления в корзину
-    window.addToCart = function() {
-        // Получаем productSlug из глобальной переменной или из другого места
-        const productSlug = '{{ product.slug }}'
-        console.log('Product Slug:', productSlug);
 
-        if (!productSlug) {
-            console.error('Product slug not found');
-            showNotification('Ошибка: не найден идентификатор товара', 'error');
-            return;
-        }
-
-        console.log('Product Slug:', productSlug);
-
-        // Обновляем выбранный размер перед отправкой
-        updateSelectedSize();
-        console.log('Selected Size ID:', selectedSizeId);
-
-        if (!selectedSizeId) {
-            showNotification('Пожалуйста, выберите размер', 'error');
-            return;
-        }
-
-        // Формируем URL для добавления в корзину
-        const cartUrl = `/cart/add/${productSlug}/`;
-
-        let formData = new FormData();
-        formData.append('size_id', selectedSizeId);
-        formData.append('quantity', '1');
-
-        fetch(cartUrl, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => {
-            console.log('Response Status:', response.status);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Response Data:', data);
-            if (data.error) {
-                showNotification(data.error, 'error');
-            } else {
-                updateHeaderCartCount(data.total_items || data.cart_count);
-                showNotification(data.message || 'Товар добавлен в корзину');
-
-                // Обновляем модальное окно корзины через HTMX если доступно
-                if (typeof htmx !== 'undefined') {
-                    htmx.ajax('GET', '/cart/modal/', {
-                        target: '.cart-sidebar',
-                        swap: 'innerHTML'
-                    });
+function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showNotification('Ошибка при добавлении в корзину', 'error');
-        });
-    }
+        }
+        return cookieValue;
+      }
 
+// Корзина
+function initCart() {
 
     // Делегирование событий для корзины
     document.addEventListener('click', function(e) {
@@ -262,57 +197,40 @@ function initCart() {
             document.body.style.overflow = '';
         }
 
-        // Добавление в корзину (новый функционал)
-        if (e.target.closest('.add-to-cart-btn')) {
-            const btn = e.target.closest('.add-to-cart-btn');
-            const productCard = btn.closest('.product-card');
-            const productSlug = btn.dataset.productSlug || productCard?.dataset.productSlug;
+        // Выбор размера через радио-кнопки
+        if (e.target.closest('.size-btn') || e.target.closest('.label-size')) {
+            const radio = e.target.closest('.size-btn') ||
+                         document.getElementById(e.target.closest('.label-size').getAttribute('for'));
+            if (radio && !radio.disabled) {
+                radio.checked = true;
+                updateSelectedSize();
 
-            if (productSlug) {
-                addToCart(productSlug);
-            } else {
-                console.error('Product slug not found');
-                showNotification('Ошибка: не найден идентификатор товара', 'error');
+                // Обновляем визуальное выделение
+                document.querySelectorAll('.label-size').forEach(label => {
+                    label.classList.remove('selected');
+                });
+                const label = document.querySelector(`label[for="${radio.id}"]`);
+                if (label) label.classList.add('selected');
             }
         }
 
-        // Выбор размера
-        if (e.target.closest('.size-option')) {
-            const sizeOption = e.target.closest('.size-option');
-            const allSizeOptions = document.querySelectorAll('.size-option');
-
-            // Убираем выделение со всех вариантов
-            allSizeOptions.forEach(option => option.classList.remove('selected'));
-
-            // Выделяем выбранный вариант
-            sizeOption.classList.add('selected');
-            selectedSizeId = sizeOption.dataset.sizeId;
-
-            console.log('Size selected:', selectedSizeId);
-        }
-
-        // Управление количеством в корзине
+        // Остальные обработчики...
         if (e.target.closest('.increase')) {
             const item = e.target.closest('.cart-item');
             const productId = item.dataset.productId;
-
         }
 
         if (e.target.closest('.decrease')) {
             const item = e.target.closest('.cart-item');
             const productId = item.dataset.productId;
-            // Здесь можно добавить логику для уменьшения количества через AJAX
         }
 
         if (e.target.closest('.remove-btn')) {
             const item = e.target.closest('.cart-item');
             const productId = item.dataset.productId;
-            // Здесь можно добавить логику для удаления через AJAX
         }
 
-        // Оформление заказа
         if (e.target.closest('.checkout-btn')) {
-            // Логика оформления заказа
             const sidebar = document.getElementById('cartSidebar');
             const overlay = document.getElementById('cartOverlay');
             if (sidebar) sidebar.classList.remove('active');
@@ -335,13 +253,15 @@ function initCart() {
     });
 
     // Инициализация выбранного размера при загрузке
-    const defaultSize = document.querySelector('.size-option.selected') ||
-                       document.querySelector('.size-option:not(.out-of-stock)');
+    const defaultSize = document.querySelector('.size-btn:checked') ||
+                       document.querySelector('.size-btn:not(:disabled)');
     if (defaultSize) {
-        defaultSize.classList.add('selected');
-        selectedSizeId = defaultSize.dataset.sizeId;
+        defaultSize.checked = true;
+        updateSelectedSize();
+        const label = document.querySelector(`label[for="${defaultSize.id}"]`);
+        if (label) label.classList.add('selected');
     }
-}
+  }
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', initializeApp);
@@ -356,10 +276,3 @@ if (typeof htmx !== 'undefined') {
 
 // Глобальная функция для вызова извне
 window.initializeApp = initializeApp;
-window.addToCart = function(productSlug) {
-    // Глобальная функция для ручного вызова добавления в корзину
-    const initCartFunction = window.initCart;
-    if (initCartFunction && typeof initCartFunction.addToCart === 'function') {
-        initCartFunction.addToCart(productSlug);
-    }
-};

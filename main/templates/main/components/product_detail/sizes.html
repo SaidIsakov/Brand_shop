@@ -1,0 +1,23 @@
+                <div class="product-options">
+                    <div class="option-group">
+                        <label>Размер:</label>
+                        {% if product.product_size.all %}
+                        <div class="size-selector">
+                          {% for product_size in product.product_size.all %}
+                           <input
+                              type="radio"
+                              name='size'
+                              class="size-btn"
+                              id="size-{{ product_size.id }}"
+                              value="{{ product_size.id }}"
+                              data-size="{{ product_size.size.name }}"
+                              >
+                              <label for="size-{{ product_size.id }}" class="label-size">
+                              {{ product_size.size.name }}
+                              </label>
+                          {% endfor %}
+                        </div>
+                      {% else %}
+
+                      <h3> Нет размеров  </h3>
+                      {% endif %}

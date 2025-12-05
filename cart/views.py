@@ -9,11 +9,9 @@ from .models import Cart, CartItem
 from .forms import AddToCartForm, UpdateCartItemForm
 import json
 
-
 class CartMixin:
   def get_cart(self, request):
     """ Получаем последнее состояние корзины """
-
     if hasattr(request, 'cart'):
       return request.cart
     if not request.session.session_key:
@@ -31,67 +29,72 @@ class CartModalView(CartMixin, View):
     context = {
       'cart': cart,
       'cart_items': cart.items.select_related(
-        'product',
-        'product_size'
-      ).oder_by('-added_at')
+      'product',
+      'product_size__size'
+      ).order_by('-added_at')
     }
     return TemplateResponse(request, 'cart/cart_modal.html', context)
 
-
 class AddToCartView(CartMixin, View):
-  @transaction.atomic
-  def post(self, request, slug):
-    cart = self.get_cart(request)
-    product = get_object_or_404(Product, slug=slug)
+    @transaction.atomic
+    def post(self, request, slug):
+        cart = self.get_cart(request)
+        product = get_object_or_404(Product, slug=slug)
 
-    form = AddToCartForm(request.POST, product=product)
+        form = AddToCartForm(request.POST, product=product)
 
-    if not form.is_valid():
-      return JsonResponse({
-        'error': 'Invalid form data',
-        'errors': form.errors,
-      }, status=400)
-    size_id = form.cleaned_data.get('size_id')
-    if size_id:
-      product_size = get_object_or_404(ProductSize,
-                                       id=size_id,
-                                       product=product)
-    else:
-      product_size = product.product.sizes.filter(stock__gt=0).first()
-      if not product_size:
-        return JsonResponse({
-          'error': 'No sizes available'
-        })
-    quantity = form.cleaned_data['quantity']
-    if product_size.stock < quantity:
-      return JsonResponse({
-        'error': f'Only {product_size.stock} items avalable'
-      }, status=400)
-    existing_item = cart.items.filter(
-      product = product,
-      product_size = product_size,
-    ).first()
+        if not form.is_valid():
+            return JsonResponse({
+                'error': 'Ошибка в заполнеии формы',
+                'errors': form.errors,
+            }, status=400)
 
-    if existing_item:
-      total_quantity = existing_item.quantity + quantity
-      if total_quantity > product_size.stock:
-        return JsonResponse({
-          'error': f'Cannot add {quantity} items. Only {product_size.stock - existing_item.quantity} more avalable.'
-        }, status=400)
-      cart_item = cart.add_product(product, product_size, quantity)
+        size_id = form.cleaned_data.get('size_id')
+        if size_id:
+            product_size = get_object_or_404(
+                ProductSize,
+                id=size_id,
+                product=product
+            )
+        else:
+            product_size = product.product_sizes.filter(stock__gt=0).first()
+            if not product_size:
+                return JsonResponse({
+                    'error': 'Нет размеров в наличии'
+                }, status=400)
 
-      request.session['cart_id'] = cart.id
-      request.session.modified = True
+        quantity = form.cleaned_data['quantity']
+        if product_size.stock < quantity:
+            return JsonResponse({
+                'error': f'Только {product_size.stock} товаров в наличии'
+            }, status=400)
 
-      if request.headers.get('Hx-Request'):
-        return redirect('cart/cart_modal')
-      else:
-        return JsonResponse({
-          'success': True,
-          'total_items': cart.total_items,
-          'message': f'{product.name} added to cart',
-          'cart_item_id': cart_item.id
-        })
+        existing_item = cart.items.filter(
+            product=product,
+            product_size=product_size,
+        ).first()
+
+        if existing_item:
+            total_quantity = existing_item.quantity + quantity
+            if total_quantity > product_size.stock:
+                return JsonResponse({
+                    'error': f"Cannot add {quantity} items. Only {product_size.stock - existing_item.quantity} more available."
+                }, status=400)
+
+        cart_item = cart.add_product(product, product_size, quantity)
+
+        request.session['cart_id'] = cart.id
+        request.session.modified = True
+
+        if request.headers.get('HX-Request'):
+            return redirect('cart_modal')
+        else:
+            return JsonResponse({
+                'success': True,
+                'total_items': cart.total_items,
+                'message': f"{product.name} добавлена в корзину",
+                'cart_item_id': cart_item.id
+            })
 
 class UpdateCartItemView(CartMixin, View):
   @transaction.atomic
@@ -110,12 +113,12 @@ class UpdateCartItemView(CartMixin, View):
     else:
       if quantity > cart_item.product_size.stock:
         return JsonResponse({
-          'error': f'Only {cart_item.product_size.stock} items avalable'
+          'error': f'Only {cart_item.product_size.stock} товаров в наличии'
         }, status=400)
       cart_item.quantity = quantity
       cart_item.save()
 
-    request.session['cart_item'] = cart.id
+    request.session['cart_id'] = cart.id
     request.session.modified = True
 
     context = {
@@ -125,7 +128,7 @@ class UpdateCartItemView(CartMixin, View):
         'product_size__size',
       ).order_by('-added_at')
     }
-    return TemplateResponse(request, 'cart/cart_modal.html', context)
+    return TemplateResponse(request,  context)
 
 
 class RemoveCartItemView(CartMixin, View):
@@ -173,7 +176,7 @@ class ClearCartView(CartMixin, View):
       })
     return JsonResponse({
       'success': True,
-      'message':'Cart cleared'
+      'message':'Корзина очищена'
     })
 
 

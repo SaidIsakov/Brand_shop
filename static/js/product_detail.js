@@ -114,29 +114,6 @@ function initProductGallery() {
         }
     }
 
-    // Size selector
-    document.addEventListener('click', function(e) {
-        const sizeBtn = e.target.closest('.size-btn');
-        if (sizeBtn) {
-            const sizeButtons = document.querySelectorAll('.size-btn');
-            sizeButtons.forEach(b => {
-                if (b) b.classList.remove('active');
-            });
-            sizeBtn.classList.add('active');
-        }
-    });
-
-    // Color selector
-    document.addEventListener('click', function(e) {
-        const colorBtn = e.target.closest('.color-btn');
-        if (colorBtn) {
-            const colorButtons = document.querySelectorAll('.color-btn');
-            colorButtons.forEach(b => {
-                if (b) b.classList.remove('active');
-            });
-            colorBtn.classList.add('active');
-        }
-    });
 
     // Инициализация первой миниатюры как активной
     if (thumbnails.length > 0 && thumbnails[0]) {

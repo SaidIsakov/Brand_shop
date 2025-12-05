@@ -212,6 +212,51 @@
     color: #fff;
 }
 
+.size-btn {
+    display: none;
+}
+
+/* Стили для label, которые выглядят как кнопка */
+.label-size {
+    padding: 12px 20px;
+    border: 2px solid #000;
+    background: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 60px;
+    display: inline-block;
+    text-align: center;
+    margin: 5px;
+    border-radius: 0; /* или добавьте border-radius если нужно */
+}
+
+/* Ховер эффект */
+.label-size:hover {
+    background: #f5f5f5;
+}
+
+/* Активное состояние когда radio выбран */
+.size-btn:checked + .label-size {
+    background: #000;
+    color: #fff;
+}
+
+/* Отключенное состояние если размер недоступен */
+.size-btn:disabled + .label-size {
+    background: #f0f0f0;
+    color: #999;
+    border-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* Фокус состояние для доступности */
+.size-btn:focus + .label-size {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+
 .color-selector {
     display: flex;
     gap: 15px;

@@ -31,7 +31,7 @@ class Cart(models.Model):
       cart_item.quantity += quantity
       cart_item.save()
 
-      return cart_item
+    return cart_item  
 
   def remove_item(self, item_id):
     try:
@@ -71,4 +71,4 @@ class CartItem(models.Model):
 
   @property
   def total_price(self):
-    return Decimal(str(self.product.price) * self.quantity)
+    return Decimal(str(self.product.price)) * self.quantity

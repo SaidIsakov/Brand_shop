@@ -45,7 +45,7 @@
             <div class="product-info">
                 <div class="product-header">
                     <span class="product-category">НОВАЯ КОЛЛЕКЦИЯ</span>
-                    <h1 class="product-title">{{ product.name }}</h1>
+                    <h1 class="product-title">{{ product.name|upper }}</h1>
                     <p class="product-price">{{ product.price }} ₽</p>
                 </div>
 
@@ -64,32 +64,11 @@
                 </div>
 
                 <!-- SIZES -->
-                <div class="product-options">
-                    <div class="option-group">
-                        <label>Размер:</label>
-                        {% if product.product_size.all %}
-                        <div class="size-selector">
-                          {% for product_size in product.product_size.all %}
-                            <button class="size-btn">{{ product_size.size.name }}</button>
-                          {% endfor %}
-                        </div>
-                      {% else %}
+                {% include "main/components/product_detail/sizes.html" %}
 
-                      <h3> Нет размеров  </h3>
-                      {% endif %}
-                    
-
-                    <div class="option-group">
-                        <label>Цвет:</label>
-                        <div class="color-selector">
-                            <button class="color-btn active" style="background: #000;" aria-label="Black"></button>
-                            <button class="color-btn" style="background: #fff; border: 2px solid #000;" aria-label="White"></button>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="product-actions">
-                    <button class="btn-primary add-to-cart" id='add-to-cart-btn'
+                    <button class="btn-primary add-to-cart" id='cartBtn'
                     onclick="addToCart()">ДОБАВИТЬ В КОРЗИНУ</button>
                     <button class="btn-secondary wishlist">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -115,5 +94,58 @@
             </div>
         </div>
     </main>
+
+    <script>
+
+      // Функция добовления товара в корзину
+      function addToCart() {
+        const productSlug = '{{ product.slug }}';
+        console.log('Product Slug:', productSlug);
+
+        // Update selected size before sending
+        updateSelectedSize();
+        console.log('Selected Size ID:', selectedSizeId);
+
+        if (!selectedSizeId) {
+            showNotification('Please select a size');
+            return;
+        }
+
+        let formData = new FormData();
+        formData.append('size_id', selectedSizeId);
+        formData.append('quantity', '1');
+
+        fetch(`{% url 'add_to_cart' 'PLACEHOLDER' %}`.replace('PLACEHOLDER', productSlug), {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => {
+            console.log('Response Status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response Data:', data);
+            if (data.error) {
+                showNotification(data.error);
+            } else {
+                updateHeaderCartCount(data.total_items);
+                showNotification(data.message);
+                htmx.ajax('GET', '{% url "cart_modal" %}', {
+                    target: '.cartSidebar',
+                    swap: 'innerHTML'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Error adding to cart');
+        });
+    }
+
+
+    </script>
 {% endblock main %}
 

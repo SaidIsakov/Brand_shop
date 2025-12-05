@@ -1,6 +1,5 @@
-{% load carts_tags %}
-
 <!-- Cart Sidebar -->
+  <div id="cart-modal">
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h2>Корзина</h2>
@@ -11,15 +10,27 @@
                 </svg>
             </button>
         </div>
+
         <div class="cart-items" id="cartItems">
+        {% for item in cart_items %}
+          <div class="cart-item" data-product-id="{{ item.product.id }}">
+            <h1>{{ item.product.name }}</h1>
+          </div>
+        {% empty %}
             <p class="cart-empty">Корзина пуста</p>
-        </div>
-        <div class="cart-footer">
+        {% endfor %}
+      </div>
+
+      <!-- Cart Footer -->
+        <div class="cart-footer" id="cart-summary">
             <div class="cart-total">
                 <span>Итого:</span>
-                <span id="cartTotal">0 ₽</span>
+                <span id="cartTotal">{{ cart_suntotal }}</span>
             </div>
             <button class="checkout-btn">Оформить заказ</button>
         </div>
     </div>
+  </div>
+
+    <!-- Cart Overlay -->
     <div class="cart-overlay" id="cartOverlay"></div>
